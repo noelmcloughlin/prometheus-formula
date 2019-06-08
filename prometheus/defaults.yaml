@@ -2,30 +2,28 @@
 # vim: ft=yaml
 ---
 prometheus:
+  version: '2.10.0'
   pkg:
     name: prometheus
     binary: prometheus
-    use_upstream_repo: False
     use_upstream_archive: False
     archive:
       name: /opt
-      source: https://github.com/prometheus/prometheus/releases/download/v2.10.0/prometheus-2.10.0.linux-amd64.tar.gz
-      source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+      uri: https://github.com/prometheus/prometheus/releases/download/
+      source: None
       trim_output: True
-      enforce_toplevel: True
-    repo:
-      humanname: prometheus
-      name: prometheus
-      comments:
-        - installed by salt
-      enabled: 1
-      gpgcheck: 1
+      enforce_toplevel: False
+      archive_format: tar.gz
+      options: --strip-components=1
+      # Just here for linux-amd64
+      source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+
   rootgroup: root
+  kernel: {{ grains.kernel | lower }}
   config_file: /etc/prometheus/prometheus.yml
   config: {}
   environ_file: /etc/default/prometheus.sh
-  environ:
-    - 'export PATH=${PATH}:/opt/prometheus-2.10.0.linux-amd64'
+  environ: []
   service:
     name: prometheus
     user: prometheus

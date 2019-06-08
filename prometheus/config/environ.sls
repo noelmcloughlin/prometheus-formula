@@ -4,14 +4,11 @@
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- set sls_archive_install = tplroot ~ '.archive.install' %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
-{%- if 'environ' in prometheus and prometheus.environ %}
-    {%- if prometheus.pkg.use_upstream_archive %}
-        {%- set sls_package_install = tplroot ~ '.archive.install' %}
-
 include:
-  - {{ sls_package_install }}
+  - {{ sls_archive_install }}
 
 prometheus-config-file-file-managed-environ_file:
   file.managed:
@@ -26,9 +23,6 @@ prometheus-config-file-file-managed-environ_file:
     - makedirs: True
     - template: jinja
     - context:
-        config: {{ prometheus.environ|json }}
+        prometheus: {{ prometheus|json }}
     - require:
-      - sls: {{ sls_package_install }}
-
-    {%- endif %}
-{%- endif %}
+      - sls: {{ sls_archive_install }}

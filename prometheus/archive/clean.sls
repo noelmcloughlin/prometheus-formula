@@ -8,5 +8,4 @@
 prometheus-cli-package-archive-clean-file-absent:
   file.absent:
     - names:
-      - {{ prometheus.pkg.archive.name }}/prometheus-2.10.0.linux-amd64
-      - {{ prometheus.pkg.archive.name }}/prometheus-2.10.0.macosx-amd64
+      - {{ prometheus.pkg.archive.name }}

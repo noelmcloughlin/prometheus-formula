@@ -16,3 +16,8 @@ prometheus-package-archive-install-file-directory:
 prometheus-package-archive-install-archive-extracted:
   archive.extracted:
     {{- format_kwargs(prometheus.pkg.archive) }}
+    - retry:
+        attempts: 3
+        until: True
+        interval: 60
+        splay: 10
