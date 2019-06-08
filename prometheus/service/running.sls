@@ -15,8 +15,10 @@ prometheus-service-running-service-running:
   service.running:
     - name: {{ prometheus.service.name }}
     - enable: True
+  {%- if 'config' in prometheus and prometheus.config %}
     - watch:
-      - file: prometheus-config-file-file-managed
+      - file: prometheus-config-file-file-managed-config_file
     - require:
       - sls: {{ sls_config_args }}
       - sls: {{ sls_config_file }}
+  {%- endif %}

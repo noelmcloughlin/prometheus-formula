@@ -6,21 +6,18 @@
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
-{%- if 'config' in prometheus and prometheus.config %}
+{%- if 'environ' in prometheus and prometheus.environ %}
     {%- if prometheus.pkg.use_upstream_archive %}
         {%- set sls_package_install = tplroot ~ '.archive.install' %}
-    {%- else %}
-        {%- set sls_package_install = tplroot ~ '.package.install' %}
-    {%- endif %}
 
 include:
   - {{ sls_package_install }}
 
-prometheus-config-file-file-managed-config_file:
+prometheus-config-file-file-managed-environ_file:
   file.managed:
-    - name: {{ prometheus.config_file }}
-    - source: {{ files_switch(['prometheus.yml.jinja'],
-                              lookup='prometheus-config-file-file-managed-config_file'
+    - name: {{ prometheus.environ_file }}
+    - source: {{ files_switch(['prometheus.sh.jinja'],
+                              lookup='prometheus-config-file-file-managed-environ_file'
                  )
               }}
     - mode: 644
@@ -29,8 +26,9 @@ prometheus-config-file-file-managed-config_file:
     - makedirs: True
     - template: jinja
     - context:
-        config: {{ prometheus.config|json }}
+        config: {{ prometheus.environ|json }}
     - require:
       - sls: {{ sls_package_install }}
 
+    {%- endif %}
 {%- endif %}
