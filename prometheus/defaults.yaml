@@ -5,6 +5,7 @@ prometheus:
   pkg:
     name: prometheus
     binary: prometheus
+    use_upstream_repo: False
     use_upstream_archive: False
     archive:
       name: /opt
@@ -12,6 +13,13 @@ prometheus:
       source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
       trim_output: True
       enforce_toplevel: True
+    repo:
+      humanname: prometheus
+      name: prometheus
+      comments:
+        - installed by salt
+      enabled: 1
+      gpgcheck: 1
   rootgroup: root
   config_file: /etc/prometheus/prometheus.yml
   config: {}
