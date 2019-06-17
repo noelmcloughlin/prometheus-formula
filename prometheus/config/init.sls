@@ -5,4 +5,3 @@ include:
   - .args
   - .file
   - .environ
-  - .alternatives
